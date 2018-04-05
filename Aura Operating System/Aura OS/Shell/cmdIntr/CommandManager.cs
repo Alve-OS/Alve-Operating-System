@@ -4,6 +4,10 @@
 * PROGRAMMER(S):    John Welsh <djlw78@gmail.com>
 */
 
+using Aura_OS.System.Executables;
+using System;
+using System.IO;
+using System;
 using Cosmos.HAL.PCInformation;
 using System;
 using System.Collections.Generic;
@@ -37,7 +41,7 @@ namespace Aura_OS.Shell.cmdIntr
             {
                 Power.Reboot.c_Reboot();
             }
-
+          
             #endregion Power
 
             #region Console
@@ -140,7 +144,7 @@ namespace Aura_OS.Shell.cmdIntr
             {
                 Settings.Passwd.c_Passwd(Kernel.userLogged);
             }
-
+          
             #endregion Settings
 
             #region System Infomation

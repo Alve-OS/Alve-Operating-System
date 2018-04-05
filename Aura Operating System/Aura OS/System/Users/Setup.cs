@@ -11,6 +11,8 @@ using Aura_OS.System.Security;
 using Aura_OS.System.Drawable;
 using Aura_OS.System.Translation;
 using Aura_OS.System.Utils;
+using System.Collections.Generic;
+using Aura_OS.System.Drivers;
 
 namespace Aura_OS.System
 {
@@ -224,6 +226,24 @@ namespace Aura_OS.System
             {
                 RegisterLanguage();
             }
+            #region Drivers
+
+            Drivers.Syscalls.AuraAPI auraapi_syscalls = new Drivers.Syscalls.AuraAPI(); //Aura API
+
+            for (int i = 0; i < Kernel.Drivers.Count; i++)
+            {
+                if (Kernel.Drivers[i].Init())
+                {
+                    Console.WriteLine(Kernel.Drivers[i].Name + "' loaded sucessfully");
+                }
+                else
+                {
+                    Console.WriteLine("Failure loading module '" + Kernel.Drivers[i].Name + "'");
+                    Console.ReadKey();
+                }
+            }
+
+            #endregion
             Kernel.SystemExists = false;
             Kernel.userLogged = "root";
             Kernel.Logged = true;
@@ -245,6 +265,25 @@ namespace Aura_OS.System
             Kernel.userLogged = username;
             Kernel.JustInstalled = true;
             Kernel.running = true;
+
+            #region Drivers
+
+            Drivers.Syscalls.AuraAPI auraapi_syscalls = new Drivers.Syscalls.AuraAPI(); //Aura API
+
+            for (int i = 0; i < Kernel.Drivers.Count; i++)
+            {
+                if (Kernel.Drivers[i].Init())
+                {
+                    Console.WriteLine(Kernel.Drivers[i].Name + "' loaded sucessfully");
+                }
+                else
+                {
+                    Console.WriteLine("Failure loading module '" + Kernel.Drivers[i].Name + "'");
+                    Console.ReadKey();
+                }
+            }
+
+            #endregion
 
             Console.Clear();
 

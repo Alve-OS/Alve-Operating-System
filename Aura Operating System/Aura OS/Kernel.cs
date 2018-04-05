@@ -1,4 +1,4 @@
-﻿/*
+/*
 * PROJECT:          Aura Operating System Development
 * CONTENT:          Kernel
 * PROGRAMMERS:      Valentin Charbonnier <valentinbreiz@gmail.com>
@@ -16,6 +16,7 @@ using Aura_OS.System.Users;
 using Aura_OS.System.Computer;
 using Aura_OS.System.Utils;
 using System.Collections.Generic;
+using Aura_OS.System.Drivers;
 using System.Text;
 using Cosmos.System.ExtendedASCII;
 
@@ -41,7 +42,9 @@ namespace Aura_OS
         public static string UserDir = @"0:\Users\" + userLogged + "\\";
         public static bool SystemExists = false;
         public static bool JustInstalled = false;
+        public static List<Driver> Drivers = new List<Driver>();
         public static CosmosVFS vFS = new CosmosVFS();
+        public static bool Safemode = true;
 		public static Dictionary<string, string> environmentvariables = new Dictionary<string, string>();
         public static System.Sound.PCSpeaker speaker = new System.Sound.PCSpeaker();
         public static string boottime = Time.MonthString() + "/" + Time.DayString() + "/" + Time.YearString() + ", " + Time.TimeString(true, true, true);
@@ -104,6 +107,11 @@ namespace Aura_OS
                     {
 
                         Settings.LoadValues();
+                  
+                        langSelected = Settings.GetValue("language");
+                      
+                        Settings.LoadValues();
+                      
                         langSelected = Settings.GetValue("language");
 
                         #region Language
@@ -113,6 +121,25 @@ namespace Aura_OS
                         #endregion
 
                         Info.getComputerName();
+
+                        #region Drivers
+
+                        System.Drivers.Syscalls.AuraAPI auraapi_syscalls = new System.Drivers.Syscalls.AuraAPI(); //Aura API
+
+                        for (int i = 0; i < Drivers.Count; i++)
+                        {
+                            if (Drivers[i].Init())
+                            {
+                                Console.WriteLine(Drivers[i].Name + "' loaded sucessfully");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Failure loading module '" + Drivers[i].Name + "'");
+                                Console.ReadKey();
+                            }
+                        }
+
+                        #endregion
 
                         running = true;
 
